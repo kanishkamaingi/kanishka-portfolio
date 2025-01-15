@@ -1,16 +1,64 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const bodyParser = require('body-parser');
+const nodemailer = require('nodemailer');
+
 
 // Set up static files
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
 app.set('views', __dirname + '/views');
 // Set view engine to EJS
 app.set('view engine', 'ejs');
 
+app.use(express.urlencoded({ extended: true }));
+
 // Basic route
 app.get('/', (req, res) => {
-  res.render('index');
+  // Get success status from session
+  const success = req.session.success || false;
+  
+  // Clear the success flag after reading it
+  req.session.success = false;
+  
+  res.render('index', { success });
+});
+
+// Route to handle form submission
+app.post('/send-message', async (req, res) => {
+  const { name, email, message } = req.body;
+
+  if (!name || !email || !message) {
+      return res.status(400).json({ error: 'All fields are required' });
+  }
+
+  try {
+      // Configure your email transporter
+      const transporter = nodemailer.createTransport({
+          service: 'Gmail',
+          auth: {
+              user: 'kanishkamaingi21@gmail.com', // Replace with your email
+              pass: 'Kanu@210504',       // Replace with your email password
+          },
+      });
+
+      // Email options
+      const mailOptions = {
+          from: email,
+          to: 'kanishkamaingi21@gmail.com', 
+          subject: `Message from ${name}`,
+          text: message,
+      };
+
+      // Send email
+      await transporter.sendMail(mailOptions);
+
+      res.json({ success: 'Message sent successfully!' });
+  } catch (error) {
+      console.error('Error sending email:', error);
+      res.status(500).json({ error: 'Failed to send message' });
+  }
 });
 
 
