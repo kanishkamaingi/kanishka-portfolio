@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
   
   
-  res.render('index', { success });
+  res.render('index');
 });
 
 // // Route to handle form submission
