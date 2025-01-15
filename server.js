@@ -38,8 +38,8 @@ app.post('/send-message', async (req, res) => {
       const transporter = nodemailer.createTransport({
           service: 'Gmail',
           auth: {
-              user: 'kanishkamaingi21@gmail.com', // Replace with your email
-              pass: 'Kanu@210504',       // Replace with your email password
+              user: 'kanish21@gmail.com', // Replace with your email
+              pass: 'K',       // Replace with your email password
           },
       });
 
