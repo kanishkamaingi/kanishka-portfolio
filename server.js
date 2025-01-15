@@ -16,50 +16,46 @@ app.use(express.urlencoded({ extended: true }));
 
 // Basic route
 app.get('/', (req, res) => {
-  // Get success status from session
-  const success = req.session.success || false;
   
-  // Clear the success flag after reading it
-  req.session.success = false;
   
   res.render('index', { success });
 });
 
-// Route to handle form submission
-app.post('/send-message', async (req, res) => {
-  const { name, email, message } = req.body;
+// // Route to handle form submission
+// app.post('/send-message', async (req, res) => {
+//   const { name, email, message } = req.body;
 
-  if (!name || !email || !message) {
-      return res.status(400).json({ error: 'All fields are required' });
-  }
+//   if (!name || !email || !message) {
+//       return res.status(400).json({ error: 'All fields are required' });
+//   }
 
-  try {
-      // Configure your email transporter
-      const transporter = nodemailer.createTransport({
-          service: 'Gmail',
-          auth: {
-              user: 'kanish21@gmail.com', // Replace with your email
-              pass: 'K',       // Replace with your email password
-          },
-      });
+//   try {
+//       // Configure your email transporter
+//       const transporter = nodemailer.createTransport({
+//           service: 'Gmail',
+//           auth: {
+//               user: 'kanish21@gmail.com', // Replace with your email
+//               pass: 'K',       // Replace with your email password
+//           },
+//       });
 
-      // Email options
-      const mailOptions = {
-          from: email,
-          to: 'kanishkamaingi21@gmail.com', 
-          subject: `Message from ${name}`,
-          text: message,
-      };
+//       // Email options
+//       const mailOptions = {
+//           from: email,
+//           to: 'kanishkamaingi21@gmail.com', 
+//           subject: `Message from ${name}`,
+//           text: message,
+//       };
 
-      // Send email
-      await transporter.sendMail(mailOptions);
+//       // Send email
+//       await transporter.sendMail(mailOptions);
 
-      res.json({ success: 'Message sent successfully!' });
-  } catch (error) {
-      console.error('Error sending email:', error);
-      res.status(500).json({ error: 'Failed to send message' });
-  }
-});
+//       res.json({ success: 'Message sent successfully!' });
+//   } catch (error) {
+//       console.error('Error sending email:', error);
+//       res.status(500).json({ error: 'Failed to send message' });
+//   }
+// });
 
 
 
